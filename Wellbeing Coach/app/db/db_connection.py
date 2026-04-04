@@ -8,11 +8,13 @@ load_dotenv()
 def get_connection():
     try:
         conn = psycopg2.connect(
-            os.getenv("POSTGRES_PRISMA_URL")
+            os.getenv("POSTGRES_URL_NON_POOLING"),
+            sslmode="require"
         )
         return conn
+
     except Exception as e:
-        raise Exception(e)
+        raise RuntimeError(f"Database connection failed: {e}")
 
 def create_tables():
     try:
